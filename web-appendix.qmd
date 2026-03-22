@@ -1,0 +1,50 @@
+---
+title: "Misperception of Multiple Risks in Medical Decision-Making"
+jcr-mode: manuscript
+format: jcrquarto-pdf
+bibliography: bibliography.bib
+---
+
+\begin{center}
+\textbf{WEB APPENDIX}
+\end{center}
+
+\vspace{\baselineskip}
+
+**Table of Contents**
+
+Web Appendix A: Stimuli and Scenarios \dotfill\ 2
+
+Web Appendix B: Attention Check and Numeracy Items \dotfill\ 3
+
+Web Appendix C: Pilot Study Results \dotfill\ 4
+
+Web Appendix D: Analyses without Covariates \dotfill\ 5
+
+\newpage
+
+# Web Appendix A: Stimuli and Scenarios {.unnumbered}
+
+This web appendix presents the stimuli and medical scenarios used across
+the eight studies reported in the main article.
+
+\newpage
+
+# Web Appendix B: Attention Check and Numeracy Items {.unnumbered}
+
+This web appendix describes the attention check items and the Berlin
+numeracy test used in the studies.
+
+\newpage
+
+# Web Appendix C: Pilot Study Results {.unnumbered}
+
+This web appendix reports detailed results from the pilot study on the
+categorization of quantitative risk information.
+
+\newpage
+
+# Web Appendix D: Analyses without Covariates {.unnumbered}
+
+This web appendix reports the main analyses without including numeracy
+and experience as covariates.
