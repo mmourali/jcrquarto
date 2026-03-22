@@ -1,0 +1,30 @@
+# Quarto render output
+/.quarto/
+*_files/
+*_cache/
+
+# Rendered outputs (users regenerate these locally)
+*.pdf
+*.html
+*.docx
+!_extensions/jcrquarto/jcr-reference.docx
+
+# LaTeX intermediates
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.tex
+*.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
