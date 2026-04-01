@@ -1,0 +1,108 @@
+% jcr-header.tex
+% Preamble for JCR. Uses pdflatex-compatible font packages.
+
+% ---- Fonts ----
+\usepackage{mathptmx}
+\usepackage[scaled=0.92]{helvet}
+
+% ---- Packages ----
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[bottom]{footmisc}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+
+% ---- Sans serif tables (JCR requires Helvetica/Arial in tables) ----
+\AtBeginEnvironment{table}{\sffamily}
+\AtBeginEnvironment{table*}{\sffamily}
+\AtBeginEnvironment{longtable}{\sffamily}
+
+% ---- Captions ----
+\usepackage[labelsep=newline,labelfont={bf},textfont={}]{caption}
+\captionsetup[table]{justification=centering,labelsep=newline,position=above}
+\captionsetup[figure]{justification=centering,labelsep=newline,position=above}
+\makeatletter
+\renewcommand{\fnum@table}{\MakeUppercase{\tablename}~\thetable}
+\renewcommand{\fnum@figure}{\MakeUppercase{\figurename}~\thefigure}
+\makeatother
+
+% ---- No underlining ----
+\renewcommand{\underline}[1]{#1}
+
+% ---- Table/figure notes (JCR style) ----
+% Usage: \begin{jcrnotes} NOTE.---Text here. \end{jcrnotes}
+\newenvironment{jcrnotes}{%
+  \par\vskip 4pt%
+  \small\sffamily\setlength{\parindent}{0.5in}\noindent\hspace{0.5in}%
+}{%
+  \par%
+}
+
+% ---- References hanging indent (0.5 inch) ----
+% Override Pandoc's default cslhangindent to match JCR's 0.5-inch requirement.
+% The CSLReferences environment is defined by Pandoc's default template;
+% we only override the indent length here.
+\ifdefined\cslhangindent
+  \setlength{\cslhangindent}{0.5in}
+\else
+  \newlength{\cslhangindent}
+  \setlength{\cslhangindent}{0.5in}
+\fi
+
+% ---- Statistics helpers ----
+\newcommand{\Mstat}[1]{\ensuremath{M = #1}}
+\newcommand{\SDstat}[1]{\ensuremath{\text{SD} = #1}}
+\newcommand{\pval}[1]{\ensuremath{p = #1}}
+\newcommand{\Fstat}[3]{\ensuremath{F(#1, #2) = #3}}
+\newcommand{\tstat}[2]{\ensuremath{t(#1) = #2}}
+\newcommand{\chisq}[2]{\ensuremath{\chi^2(#1) = #2}}
+\newcommand{\CI}[2]{95\% CI [#1, #2]}
+
+% ---- MANUSCRIPT SETUP ----
+\newcommand{\jcrsetupmanuscript}{%
+  \pagestyle{empty}%
+  \doublespacing%
+  \raggedright%
+  \setlength{\parindent}{0.5in}%
+  \titleformat{\section}%
+    {\normalfont\normalsize\bfseries\centering\MakeUppercase}{}{0pt}{}%
+  \titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}%
+  \titleformat{\subsection}%
+    {\normalfont\normalsize}{}{0pt}{}%
+  \titlespacing*{\subsection}{0pt}{\baselineskip}{\baselineskip}%
+  \titleformat{\subsubsection}[runin]%
+    {\normalfont\normalsize\itshape}{}{0pt}{}[.]%
+  \titlespacing*{\subsubsection}{\parindent}{\baselineskip}{0.5em}%
+}
+
+% ---- ARTICLE SETUP ----
+\newcommand{\jcrsetuparticle}{%
+  % Centered page numbers at bottom, no headers
+  \pagestyle{fancy}%
+  \fancyhf{}%
+  \fancyfoot[C]{\small\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyfoot[C]{\small\thepage}%
+    \renewcommand{\headrulewidth}{0pt}%
+  }%
+  \thispagestyle{plain}%
+  \setlength{\parindent}{1.5em}%
+  % Headings: bold italic, left-aligned (matches amaquarto article style)
+  \titleformat{\section}%
+    {\normalfont\large\bfseries\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\section}{0pt}{18pt}{6pt}%
+  \titleformat{\subsection}%
+    {\normalfont\normalsize\bfseries\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\subsection}{0pt}{14pt}{4pt}%
+  \titleformat{\subsubsection}%
+    {\normalfont\normalsize\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\subsubsection}{0pt}{10pt}{3pt}%
+  \captionsetup{font=small,labelfont={bf},textfont={}}%
+}

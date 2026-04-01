@@ -1,0 +1,43 @@
+title: JCR Manuscript Format
+author: jcrquarto
+version: 0.3.0
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    common:
+      csl: journal-of-consumer-research.csl
+      number-sections: false
+      filters:
+        - jcrquarto.lua
+    pdf:
+      pdf-engine: pdflatex
+      documentclass: article
+      papersize: letter
+      fontsize: 12pt
+      linestretch: 2
+      geometry:
+        - margin=1in
+      indent: true
+      include-in-header:
+        - jcr-header.tex
+      template-partials:
+        - partials/doc-class.tex
+        - partials/title.tex
+        - partials/before-body.tex
+        - partials/before-bib.tex
+      keep-tex: false
+      fig-pos: "H"
+      tbl-cap-location: top
+      fig-cap-location: top
+      link-citations: true
+      colorlinks: true
+      urlcolor: "black"
+      linkcolor: "black"
+      citecolor: "black"
+    docx:
+      reference-doc: jcr-reference.docx
+      format-resources:
+        - jcr-reference.docx
+      tbl-cap-location: top
+      fig-cap-location: top
+      link-citations: true
