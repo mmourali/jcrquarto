@@ -298,20 +298,43 @@ end
 
 function Div(el)
   if is_latex and el.classes:includes("hypothesis") then
-    return pandoc.Blocks({
-      pandoc.RawBlock("latex", "\\begin{quote}\\bfseries"),
-      table.unpack(el.content),
-      pandoc.RawBlock("latex", "\\end{quote}"),
-    })
+    local blocks = pandoc.Blocks({})
+    blocks:insert(pandoc.RawBlock("latex", "\\begin{quote}\\bfseries"))
+    for _, b in ipairs(el.content) do blocks:insert(b) end
+    blocks:insert(pandoc.RawBlock("latex", "\\end{quote}"))
+    return blocks
+  end
+  -- Figure/table labels: centered bold title block
+  if el.classes:includes("jcr-label") then
+    if is_latex then
+      local blocks = pandoc.Blocks({})
+      blocks:insert(pandoc.RawBlock("latex", "\\begin{center}"))
+      for _, b in ipairs(el.content) do blocks:insert(b) end
+      blocks:insert(pandoc.RawBlock("latex", "\\end{center}"))
+      return blocks
+    elseif is_docx then
+      local blocks = pandoc.Blocks({})
+      for _, b in ipairs(el.content) do
+        if b.t == "Para" then
+          local p = b:clone()
+          p.content:insert(1, pandoc.RawInline("openxml",
+            '<w:pPr><w:jc w:val="center"/></w:pPr>'))
+          blocks:insert(p)
+        else
+          blocks:insert(b)
+        end
+      end
+      return blocks
+    end
   end
   -- Table/figure notes: renders as small sans-serif indented text below table
   if el.classes:includes("table-notes") then
     if is_latex then
-      return pandoc.Blocks({
-        pandoc.RawBlock("latex", "\\begin{jcrnotes}"),
-        table.unpack(el.content),
-        pandoc.RawBlock("latex", "\\end{jcrnotes}"),
-      })
+      local blocks = pandoc.Blocks({})
+      blocks:insert(pandoc.RawBlock("latex", "\\begin{jcrnotes}"))
+      for _, b in ipairs(el.content) do blocks:insert(b) end
+      blocks:insert(pandoc.RawBlock("latex", "\\end{jcrnotes}"))
+      return blocks
     elseif is_docx then
       -- For DOCX, render as small italic paragraph
       local blocks = pandoc.Blocks({})
@@ -327,6 +350,40 @@ function Div(el)
         end
       end
       return blocks
+    end
+  end
+  return el
+end
+
+-- Figure notes: detect paragraphs starting with "NOTE." and style them
+-- Image centering: detect image-only paragraphs and center them
+function Para(el)
+  if #el.content == 0 then return el end
+  local first = el.content[1]
+
+  -- Center image-only paragraphs in LaTeX
+  if is_latex and #el.content == 1 and first.t == "Image" then
+    return pandoc.Blocks({
+      pandoc.RawBlock("latex", "\\begin{center}"),
+      el,
+      pandoc.RawBlock("latex", "\\end{center}"),
+    })
+  end
+
+  local text = ""
+  -- Check if the paragraph starts with "NOTE." (possibly bold or plain)
+  if first.t == "Str" then
+    text = first.text
+  elseif first.t == "Strong" and #first.content > 0 and first.content[1].t == "Str" then
+    text = first.content[1].text
+  end
+  if text:sub(1, 5) == "NOTE." then
+    if is_latex then
+      return pandoc.Blocks({
+        pandoc.RawBlock("latex", "\\begin{jcrfigurenote}"),
+        el,
+        pandoc.RawBlock("latex", "\\end{jcrfigurenote}"),
+      })
     end
   end
   return el
@@ -410,6 +467,7 @@ return {
   { Meta = Meta },
   { Note = Note },
   { Div = Div },
+  { Para = Para },
   { Header = Header },
   { Pandoc = Pandoc }
 }
