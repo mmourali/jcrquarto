@@ -1,0 +1,357 @@
+% jcr-header.tex (jcrquarto 1.0.0)
+% Preamble for JCR manuscripts. pdflatex-compatible fonts: Times for the text,
+% tables, captions, and notes; Helvetica is loaded for any sans serif text.
+
+% ---- Fonts ----
+\usepackage{mathptmx}
+\usepackage[scaled=0.92]{helvet}
+
+% ---- Quarto 1.4 (pandoc before 3.2) ----
+% Those versions wrap \paragraph and \subparagraph in a way that titlesec
+% cannot read ("Argument of \paragraph has an extra }"). The original
+% commands are put back before titlesec is loaded; the heading formats below
+% define them anew.
+\makeatletter
+\@ifundefined{xxxParagraphStar}{%
+  \@ifundefined{oldparagraph}{}{\let\paragraph\oldparagraph}%
+  \@ifundefined{oldsubparagraph}{}{\let\subparagraph\oldsubparagraph}%
+}{}
+\makeatother
+
+% ---- Packages ----
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[bottom]{footmisc}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+
+% ---- Characters typed directly ----
+% pdfLaTeX has no glyphs of its own for Greek letters and for many signs that
+% are typed as characters (a Greek alpha, a minus sign, "less than or equal").
+% In the text, Greek letters are taken upright from the Symbol font, as they
+% appear in a Word file; in formulas they are the usual math letters. The
+% other signs are set in math mode. XeLaTeX and LuaLaTeX read all of these
+% characters without help, so the definitions apply to pdfLaTeX only.
+\usepackage{iftex}
+\usepackage{pifont}
+\ifPDFTeX
+\providecommand{\texorpdfstring}[2]{#1}
+\newcommand{\jcrgreek}[3]{\texorpdfstring{\TextOrMath{\Pisymbol{psy}{#1}}{#2}}{#3}}
+\newcommand{\jcrsign}[1]{\texorpdfstring{\ensuremath{#1}}{}}
+\DeclareUnicodeCharacter{03B1}{\jcrgreek{97}{\alpha}{alpha}}
+\DeclareUnicodeCharacter{03B2}{\jcrgreek{98}{\beta}{beta}}
+\DeclareUnicodeCharacter{03B3}{\jcrgreek{103}{\gamma}{gamma}}
+\DeclareUnicodeCharacter{03B4}{\jcrgreek{100}{\delta}{delta}}
+\DeclareUnicodeCharacter{03B5}{\jcrgreek{101}{\varepsilon}{epsilon}}
+\DeclareUnicodeCharacter{03F5}{\jcrgreek{101}{\epsilon}{epsilon}}
+\DeclareUnicodeCharacter{03B6}{\jcrgreek{122}{\zeta}{zeta}}
+\DeclareUnicodeCharacter{03B7}{\jcrgreek{104}{\eta}{eta}}
+\DeclareUnicodeCharacter{03B8}{\jcrgreek{113}{\theta}{theta}}
+\DeclareUnicodeCharacter{03D1}{\jcrgreek{74}{\vartheta}{theta}}
+\DeclareUnicodeCharacter{03B9}{\jcrgreek{105}{\iota}{iota}}
+\DeclareUnicodeCharacter{03BA}{\jcrgreek{107}{\kappa}{kappa}}
+\DeclareUnicodeCharacter{03BB}{\jcrgreek{108}{\lambda}{lambda}}
+\DeclareUnicodeCharacter{03BC}{\jcrgreek{109}{\mu}{mu}}
+\DeclareUnicodeCharacter{03BD}{\jcrgreek{110}{\nu}{nu}}
+\DeclareUnicodeCharacter{03BE}{\jcrgreek{120}{\xi}{xi}}
+\DeclareUnicodeCharacter{03BF}{\jcrgreek{111}{o}{o}}
+\DeclareUnicodeCharacter{03C0}{\jcrgreek{112}{\pi}{pi}}
+\DeclareUnicodeCharacter{03D6}{\jcrgreek{118}{\varpi}{pi}}
+\DeclareUnicodeCharacter{03C1}{\jcrgreek{114}{\rho}{rho}}
+\DeclareUnicodeCharacter{03C2}{\jcrgreek{86}{\varsigma}{sigma}}
+\DeclareUnicodeCharacter{03C3}{\jcrgreek{115}{\sigma}{sigma}}
+\DeclareUnicodeCharacter{03C4}{\jcrgreek{116}{\tau}{tau}}
+\DeclareUnicodeCharacter{03C5}{\jcrgreek{117}{\upsilon}{upsilon}}
+\DeclareUnicodeCharacter{03C6}{\jcrgreek{106}{\varphi}{phi}}
+\DeclareUnicodeCharacter{03D5}{\jcrgreek{102}{\phi}{phi}}
+\DeclareUnicodeCharacter{03C7}{\jcrgreek{99}{\chi}{chi}}
+\DeclareUnicodeCharacter{03C8}{\jcrgreek{121}{\psi}{psi}}
+\DeclareUnicodeCharacter{03C9}{\jcrgreek{119}{\omega}{omega}}
+\DeclareUnicodeCharacter{0391}{\jcrgreek{65}{\mathrm{A}}{A}}
+\DeclareUnicodeCharacter{0392}{\jcrgreek{66}{\mathrm{B}}{B}}
+\DeclareUnicodeCharacter{0393}{\jcrgreek{71}{\Gamma}{Gamma}}
+\DeclareUnicodeCharacter{0394}{\jcrgreek{68}{\Delta}{Delta}}
+\DeclareUnicodeCharacter{2206}{\jcrgreek{68}{\Delta}{Delta}}
+\DeclareUnicodeCharacter{0395}{\jcrgreek{69}{\mathrm{E}}{E}}
+\DeclareUnicodeCharacter{0396}{\jcrgreek{90}{\mathrm{Z}}{Z}}
+\DeclareUnicodeCharacter{0397}{\jcrgreek{72}{\mathrm{H}}{H}}
+\DeclareUnicodeCharacter{0398}{\jcrgreek{81}{\Theta}{Theta}}
+\DeclareUnicodeCharacter{0399}{\jcrgreek{73}{\mathrm{I}}{I}}
+\DeclareUnicodeCharacter{039A}{\jcrgreek{75}{\mathrm{K}}{K}}
+\DeclareUnicodeCharacter{039B}{\jcrgreek{76}{\Lambda}{Lambda}}
+\DeclareUnicodeCharacter{039C}{\jcrgreek{77}{\mathrm{M}}{M}}
+\DeclareUnicodeCharacter{039D}{\jcrgreek{78}{\mathrm{N}}{N}}
+\DeclareUnicodeCharacter{039E}{\jcrgreek{88}{\Xi}{Xi}}
+\DeclareUnicodeCharacter{039F}{\jcrgreek{79}{\mathrm{O}}{O}}
+\DeclareUnicodeCharacter{03A0}{\jcrgreek{80}{\Pi}{Pi}}
+\DeclareUnicodeCharacter{03A1}{\jcrgreek{82}{\mathrm{P}}{P}}
+\DeclareUnicodeCharacter{03A3}{\jcrgreek{83}{\Sigma}{Sigma}}
+\DeclareUnicodeCharacter{03A4}{\jcrgreek{84}{\mathrm{T}}{T}}
+\DeclareUnicodeCharacter{03A5}{\jcrgreek{85}{\Upsilon}{Upsilon}}
+\DeclareUnicodeCharacter{03A6}{\jcrgreek{70}{\Phi}{Phi}}
+\DeclareUnicodeCharacter{03A7}{\jcrgreek{67}{\mathrm{X}}{X}}
+\DeclareUnicodeCharacter{03A8}{\jcrgreek{89}{\Psi}{Psi}}
+\DeclareUnicodeCharacter{03A9}{\jcrgreek{87}{\Omega}{Omega}}
+\DeclareUnicodeCharacter{2212}{\texorpdfstring{\ensuremath{-}}{-}}
+\DeclareUnicodeCharacter{2264}{\jcrsign{\leq}}
+\DeclareUnicodeCharacter{2265}{\jcrsign{\geq}}
+\DeclareUnicodeCharacter{2260}{\jcrsign{\neq}}
+\DeclareUnicodeCharacter{2248}{\jcrsign{\approx}}
+\DeclareUnicodeCharacter{2261}{\jcrsign{\equiv}}
+\DeclareUnicodeCharacter{223C}{\jcrsign{\sim}}
+\DeclareUnicodeCharacter{2245}{\jcrsign{\cong}}
+\DeclareUnicodeCharacter{221D}{\jcrsign{\propto}}
+\DeclareUnicodeCharacter{2213}{\jcrsign{\mp}}
+\DeclareUnicodeCharacter{2217}{\jcrsign{\ast}}
+\DeclareUnicodeCharacter{22C5}{\jcrsign{\cdot}}
+\DeclareUnicodeCharacter{2219}{\jcrsign{\bullet}}
+\DeclareUnicodeCharacter{221A}{\jcrsign{\surd}}
+\DeclareUnicodeCharacter{221E}{\jcrsign{\infty}}
+\DeclareUnicodeCharacter{2211}{\jcrsign{\sum}}
+\DeclareUnicodeCharacter{220F}{\jcrsign{\prod}}
+\DeclareUnicodeCharacter{222B}{\jcrsign{\int}}
+\DeclareUnicodeCharacter{2202}{\jcrsign{\partial}}
+\DeclareUnicodeCharacter{2207}{\jcrsign{\nabla}}
+\DeclareUnicodeCharacter{2208}{\jcrsign{\in}}
+\DeclareUnicodeCharacter{2209}{\jcrsign{\notin}}
+\DeclareUnicodeCharacter{2282}{\jcrsign{\subset}}
+\DeclareUnicodeCharacter{2286}{\jcrsign{\subseteq}}
+\DeclareUnicodeCharacter{2229}{\jcrsign{\cap}}
+\DeclareUnicodeCharacter{222A}{\jcrsign{\cup}}
+\DeclareUnicodeCharacter{2205}{\jcrsign{\emptyset}}
+\DeclareUnicodeCharacter{2200}{\jcrsign{\forall}}
+\DeclareUnicodeCharacter{2203}{\jcrsign{\exists}}
+\DeclareUnicodeCharacter{2227}{\jcrsign{\wedge}}
+\DeclareUnicodeCharacter{2228}{\jcrsign{\vee}}
+\DeclareUnicodeCharacter{2032}{\jcrsign{{}^{\prime}}}
+\DeclareUnicodeCharacter{2033}{\jcrsign{{}^{\prime\prime}}}
+\DeclareUnicodeCharacter{2194}{\jcrsign{\leftrightarrow}}
+\DeclareUnicodeCharacter{21D2}{\jcrsign{\Rightarrow}}
+\DeclareUnicodeCharacter{21D0}{\jcrsign{\Leftarrow}}
+\DeclareUnicodeCharacter{21D4}{\jcrsign{\Leftrightarrow}}
+\DeclareUnicodeCharacter{2197}{\jcrsign{\nearrow}}
+\DeclareUnicodeCharacter{2198}{\jcrsign{\searrow}}
+\DeclareUnicodeCharacter{25CF}{\jcrsign{\bullet}}
+\DeclareUnicodeCharacter{25CB}{\jcrsign{\circ}}
+\DeclareUnicodeCharacter{25A0}{\jcrsign{\blacksquare}}
+\DeclareUnicodeCharacter{25A1}{\jcrsign{\square}}
+\DeclareUnicodeCharacter{25B2}{\jcrsign{\blacktriangle}}
+\DeclareUnicodeCharacter{25B3}{\jcrsign{\triangle}}
+\DeclareUnicodeCharacter{25BC}{\jcrsign{\blacktriangledown}}
+\DeclareUnicodeCharacter{2605}{\jcrsign{\bigstar}}
+\DeclareUnicodeCharacter{2606}{\texorpdfstring{\ding{73}}{}}
+\DeclareUnicodeCharacter{2023}{\jcrsign{\triangleright}}
+\DeclareUnicodeCharacter{2713}{\texorpdfstring{\ding{51}}{}}
+\DeclareUnicodeCharacter{2714}{\texorpdfstring{\ding{52}}{}}
+\DeclareUnicodeCharacter{2717}{\texorpdfstring{\ding{55}}{}}
+\DeclareUnicodeCharacter{2718}{\texorpdfstring{\ding{56}}{}}
+\DeclareUnicodeCharacter{2070}{\textsuperscript{0}}
+\DeclareUnicodeCharacter{2074}{\textsuperscript{4}}
+\DeclareUnicodeCharacter{2075}{\textsuperscript{5}}
+\DeclareUnicodeCharacter{2076}{\textsuperscript{6}}
+\DeclareUnicodeCharacter{2077}{\textsuperscript{7}}
+\DeclareUnicodeCharacter{2078}{\textsuperscript{8}}
+\DeclareUnicodeCharacter{2079}{\textsuperscript{9}}
+\DeclareUnicodeCharacter{207A}{\textsuperscript{+}}
+\DeclareUnicodeCharacter{207B}{\textsuperscript{\ensuremath{-}}}
+\DeclareUnicodeCharacter{2080}{\textsubscript{0}}
+\DeclareUnicodeCharacter{2081}{\textsubscript{1}}
+\DeclareUnicodeCharacter{2082}{\textsubscript{2}}
+\DeclareUnicodeCharacter{2083}{\textsubscript{3}}
+\DeclareUnicodeCharacter{2084}{\textsubscript{4}}
+\DeclareUnicodeCharacter{2085}{\textsubscript{5}}
+\DeclareUnicodeCharacter{2086}{\textsubscript{6}}
+\DeclareUnicodeCharacter{2087}{\textsubscript{7}}
+\DeclareUnicodeCharacter{2088}{\textsubscript{8}}
+\DeclareUnicodeCharacter{2089}{\textsubscript{9}}
+\DeclareUnicodeCharacter{2153}{\textsuperscript{1}/\textsubscript{3}}
+\DeclareUnicodeCharacter{2154}{\textsuperscript{2}/\textsubscript{3}}
+\DeclareUnicodeCharacter{2060}{\nobreak}
+\DeclareUnicodeCharacter{FB00}{ff}
+\DeclareUnicodeCharacter{FB01}{fi}
+\DeclareUnicodeCharacter{FB02}{fl}
+\DeclareUnicodeCharacter{FB03}{ffi}
+\DeclareUnicodeCharacter{FB04}{ffl}
+\fi
+
+% ---- Tables: 12-point Times, as in JCR's sample manuscripts, single spaced ----
+% \setstretch{1} rather than \singlespacing, which adds a blank line
+\AtBeginEnvironment{table}{\normalsize\setstretch{1}}
+\AtBeginEnvironment{table*}{\normalsize\setstretch{1}}
+\AtBeginEnvironment{longtable}{\normalsize\setstretch{1}}
+% A blank line above a table label, and less space between a table and its note
+\setlength{\LTpre}{24pt}
+\setlength{\LTpost}{4pt}
+% A table that fits on a page is not split: \jcrkeep{height} starts a new
+% page when less than that height is left on the current page
+\newcommand{\jcrkeep}[1]{%
+  \par\ifdim\pagetotal>0pt\ifdim\dimexpr\pagegoal-\pagetotal\relax<#1\relax\newpage\fi\fi}
+% A table or a figure without a label takes no number. LaTeX counts every
+% title, and pandoc 3.2 (in Quarto 1.5) counts every table, with or without
+% one; the counter is put back afterward, so that the numbers agree with the
+% Word file, and a title is printed without "TABLE 1" before it.
+\newcounter{jcrsaved}
+\newcounter{jcrplain}
+\newcommand{\jcrplainbegin}[1]{\setcounter{jcrsaved}{\value{#1}}\stepcounter{jcrplain}%
+  \begingroup\ifdefined\captionsetup\captionsetup{format=plain,labelformat=empty,labelsep=none}\fi%
+  \expandafter\def\csname theH#1\endcsname{plain.\arabic{jcrplain}}}
+\newcommand{\jcrplainend}[1]{\endgroup\setcounter{#1}{\value{jcrsaved}}}
+
+% ---- Captions: "TABLE 1" or "FIGURE 1" centered, title on the next line ----
+% The title is set in capitals by the jcrquarto filters, so captions can be
+% typed in ordinary case in the .qmd file. Captions use the text font (Times)
+% and the line spacing of the text, as in JCR's sample manuscripts.
+\usepackage[labelsep=newline,labelfont={bf},textfont={},font={rm,normalsize,stretch=2},
+            justification=centering,singlelinecheck=false,skip=4pt]{caption}
+\captionsetup[table]{position=above}
+\captionsetup[figure]{position=above}
+\makeatletter
+\renewcommand{\fnum@table}{\MakeUppercase{\tablename}~\thetable}
+\renewcommand{\fnum@figure}{\MakeUppercase{\figurename}~\thefigure}
+\makeatother
+% The captions of the panels of a figure: "(a) Text", centered, in the type
+% of the text. (Quarto loads the subcaption package when a document has a
+% figure with panels.)
+\makeatletter
+\AtBeginDocument{\@ifpackageloaded{subcaption}{%
+  \captionsetup[sub]{font={rm,normalsize,singlespacing},labelfont={},textfont={},
+    labelformat=parens,labelsep=space,justification=centering,singlelinecheck=false,skip=4pt}}{}}
+\makeatother
+% The caption of a picture in a panel without a number: the same, without a letter
+\newcommand{\jcrpanelcaption}[1]{{\captionsetup{font={rm,normalsize,singlespacing},labelfont={},
+    textfont={},justification=centering,singlelinecheck=false,skip=4pt}\caption*{#1}}}
+
+% ---- Equations: "put bold number flush right in parentheses" ----
+\makeatletter
+\AtBeginDocument{\@ifpackageloaded{amsmath}{%
+  \def\tagform@#1{\maketag@@@{\textbf{(\ignorespaces#1\unskip\@@italiccorr)}}}%
+}{%
+  \renewcommand{\@eqnnum}{{\normalfont\normalcolor\textbf{(\theequation)}}}%
+}}
+\makeatother
+
+% ---- Line break inside a heading (appendix label, then title) ----
+% Protected, so that the capitalizing of primary headings leaves it alone
+\protected\def\jcrbr{\\}
+
+% ---- No underlining ----
+\renewcommand{\underline}[1]{#1}
+
+% ---- Table and figure notes: at the bottom, paragraph indented ----
+% Written in the .qmd file as a ::: {.jcr-note} div; the filter adds "NOTE."
+% 12-point type with a half-inch paragraph indent, as in JCR's sample
+% manuscripts; single spaced, like the table.
+\newenvironment{jcrnotes}{%
+  \par\nopagebreak[4]\vskip 4pt%
+  \begingroup\normalsize\setstretch{1}\raggedright
+  \setlength{\parindent}{0.5in}%
+}{%
+  \par\endgroup\vskip 12pt%
+}
+% (jcrfigurenote: the name used by jcrquarto 1.0 for the same layout)
+\newenvironment{jcrfigurenote}{\begin{jcrnotes}}{\end{jcrnotes}}
+
+% ---- Hypotheses: "bold, indented, syllabus style" ----
+% Written in the .qmd file as a ::: {.hypothesis} div. As in the style
+% guide's example, the label ("H1:") is bold and stands at the paragraph
+% indent, and the hypothesis is set as a block one inch from the margin.
+% \addvspace keeps the space single between two hypotheses in a row.
+\newlength{\jcrhypwidth}
+\newenvironment{jcrhypothesis}{%
+  \par\addvspace{12pt}\begingroup\setlength{\parindent}{0pt}%
+  \setlength{\leftskip}{1in}%
+}{%
+  \par\endgroup\addvspace{12pt}%
+}
+% The label hangs half an inch to the left of the hypothesis
+\newcommand{\jcrhyplabel}[1]{%
+  \settowidth{\jcrhypwidth}{\textbf{#1}\ }%
+  \ifdim\jcrhypwidth<0.5in\setlength{\jcrhypwidth}{0.5in}\fi
+  \leavevmode\hspace*{-0.5in}\makebox[\jcrhypwidth][l]{\textbf{#1}}\ignorespaces}
+
+% ---- Front matter: paragraphs without indentation ----
+\newenvironment{jcrfront}{\par\begingroup\setlength{\parindent}{0pt}}{\par\endgroup}
+
+% ---- References: half-inch hanging indent ----
+\ifdefined\cslhangindent
+  \setlength{\cslhangindent}{0.5in}
+\else
+  \newlength{\cslhangindent}
+  \setlength{\cslhangindent}{0.5in}
+\fi
+
+% ---- Statistics helpers ----
+\newcommand{\Mstat}[1]{\ensuremath{M = #1}}
+\newcommand{\SDstat}[1]{\ensuremath{\text{SD} = #1}}
+\newcommand{\pval}[1]{\ensuremath{p = #1}}
+\newcommand{\Fstat}[3]{\ensuremath{F(#1, #2) = #3}}
+\newcommand{\tstat}[2]{\ensuremath{t(#1) = #2}}
+\newcommand{\chisq}[2]{\ensuremath{\chi^2(#1) = #2}}
+\newcommand{\CI}[2]{95\% CI [#1, #2]}
+
+% ---- MANUSCRIPT SETUP (submission format) ----
+% Double spaced, left justified, no page numbers, headers, or footers. The
+% line spacing comes from the "linestretch" option (2 by default, which gives
+% 23 lines on a page, as Word's double spacing does in JCR's sample
+% manuscripts; 1.655 is LaTeX's tighter \doublespacing).
+% Primary headings: bold, centered, all caps, an extra double space before
+% and after. Secondary: flush left. Tertiary: indented, italic, run in, with
+% a period.
+\newcommand{\jcrsetupmanuscript}{%
+  \pagestyle{empty}%
+  \thispagestyle{empty}%
+  \raggedright%
+  \setlength{\parindent}{0.5in}%
+  \titleformat{\section}%
+    {\normalfont\normalsize\bfseries\centering\MakeUppercase}{}{0pt}{}%
+  \titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}%
+  \titleformat{\subsection}%
+    {\normalfont\normalsize}{}{0pt}{}%
+  \titlespacing*{\subsection}{0pt}{\baselineskip}{\baselineskip}%
+  \titleformat{\subsubsection}[runin]%
+    {\normalfont\normalsize\itshape}{}{0pt}{}[.]%
+  \titlespacing*{\subsubsection}{\parindent}{\baselineskip}{0.5em}%
+  % JCR uses three levels; deeper headings are set like the third
+  \titleformat{\paragraph}[runin]%
+    {\normalfont\normalsize\itshape}{}{0pt}{}[.]%
+  \titlespacing*{\paragraph}{\parindent}{\baselineskip}{0.5em}%
+  \titleformat{\subparagraph}[runin]%
+    {\normalfont\normalsize\itshape}{}{0pt}{}[.]%
+  \titlespacing*{\subparagraph}{\parindent}{\baselineskip}{0.5em}%
+}
+
+% ---- ARTICLE SETUP (publication-style preview; not for submission) ----
+\newcommand{\jcrsetuparticle}{%
+  \pagestyle{fancy}%
+  \fancyhf{}%
+  \fancyfoot[C]{\small\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyfoot[C]{\small\thepage}%
+    \renewcommand{\headrulewidth}{0pt}%
+  }%
+  \thispagestyle{plain}%
+  \setlength{\parindent}{1.5em}%
+  \titleformat{\section}%
+    {\normalfont\large\bfseries\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\section}{0pt}{18pt}{6pt}%
+  \titleformat{\subsection}%
+    {\normalfont\normalsize\bfseries\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\subsection}{0pt}{14pt}{4pt}%
+  \titleformat{\subsubsection}%
+    {\normalfont\normalsize\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\subsubsection}{0pt}{10pt}{3pt}%
+  \titleformat{\paragraph}%
+    {\normalfont\normalsize\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\paragraph}{0pt}{10pt}{3pt}%
+  \titleformat{\subparagraph}%
+    {\normalfont\normalsize\itshape\raggedright}{}{0pt}{}%
+  \titlespacing*{\subparagraph}{0pt}{10pt}{3pt}%
+  \captionsetup{font=small,labelfont={bf},textfont={}}%
+}

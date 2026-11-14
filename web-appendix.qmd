@@ -1,0 +1,61 @@
+---
+# ======================================================================
+# JCR Web Appendix Template (jcrquarto 1.0.0)
+# Journal of Consumer Research
+# ======================================================================
+# The web appendix is one separate file with all supplementary materials.
+# JCR asks for a title page labeled "WEB APPENDIX" that gives the title of
+# the manuscript, exactly as in the manuscript file, and a table of
+# contents or a brief paragraph that describes the contents. The extension
+# builds that page from the title below; the text before the first web
+# appendix follows on the same page.
+#
+# During the review process the web appendix carries no author names.
+# After acceptance, add the authorship list (author: below, with
+# anonymous: false) and upload the Word file, which JCR then requires.
+#
+# Label a single web appendix "Web Appendix" and several "Web Appendix A",
+# "Web Appendix B", and so on. Each begins on a new page.
+# ======================================================================
+
+title: "Misperception of Multiple Risks in Medical Decision-Making"
+
+jcr-mode: web-appendix
+
+# --- After acceptance: the authorship list, as in the final manuscript ---
+# anonymous: false
+# author:
+#   - name:
+#       literal: "Mehdi Mourali"
+#   - name:
+#       literal: "Zhiyong Yang"
+
+format:
+  jcrquarto-docx: default
+  jcrquarto-pdf: default
+  jcrquarto-latex: default
+
+bibliography: bibliography.bib
+---
+
+This web appendix has four parts. Web appendix A presents the stimuli and scenarios, web appendix B the attention check and numeracy items, web appendix C the results of the pilot study, and web appendix D the analyses without covariates.
+
+# Web Appendix A: Stimuli and Scenarios
+
+This web appendix presents the stimuli and medical scenarios used across
+the eight studies reported in the main article.
+
+# Web Appendix B: Attention Check and Numeracy Items
+
+This web appendix describes the attention check items and the Berlin
+numeracy test used in the studies.
+
+# Web Appendix C: Pilot Study Results
+
+This web appendix reports detailed results from the pilot study on the
+categorization of quantitative risk information.
+
+# Web Appendix D: Analyses without Covariates
+
+This web appendix reports the main analyses without including numeracy
+and experience as covariates.

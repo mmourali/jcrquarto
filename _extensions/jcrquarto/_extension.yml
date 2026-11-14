@@ -1,0 +1,78 @@
+title: JCR Manuscript Format
+author: jcrquarto
+version: 1.0.0
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    common:
+      csl: journal-of-consumer-research.csl
+      number-sections: false
+      link-citations: true
+      tbl-cap-location: top
+      fig-cap-location: top
+      # JCR labels: "TABLE 1" and "FIGURE 1"; in the text, "(table 1)",
+      # "(figure 1)", and "equation 1". Use @tbl-x, @fig-x, and @eq-x; @Tbl-x,
+      # @Fig-x, and @Eq-x capitalize.
+      crossref:
+        fig-title: FIGURE
+        tbl-title: TABLE
+        fig-prefix: figure
+        tbl-prefix: table
+        eq-prefix: equation
+      filters:
+        - jcrquarto.lua
+        - at: post-render
+          path: jcrquarto-post.lua
+    pdf:
+      pdf-engine: pdflatex
+      documentclass: article
+      papersize: letter
+      fontsize: 12pt
+      linestretch: 2
+      geometry:
+        - margin=1in
+      indent: true
+      include-in-header:
+        - jcr-header.tex
+      template-partials:
+        - partials/doc-class.tex
+        - partials/title.tex
+        - partials/before-body.tex
+        - partials/before-bib.tex
+      # Keep the .tex next to the PDF, so that rendering all formats at once
+      # does not delete the jcrquarto-latex output
+      keep-tex: true
+      fig-pos: "H"
+      # Images written without an extension use the vector PDF version
+      default-image-extension: pdf
+      colorlinks: true
+      urlcolor: "black"
+      linkcolor: "black"
+      citecolor: "black"
+    # The same document as the PDF, written as a .tex file (compile with pdflatex)
+    latex:
+      pdf-engine: pdflatex
+      default-image-extension: pdf
+      documentclass: article
+      papersize: letter
+      fontsize: 12pt
+      linestretch: 2
+      geometry:
+        - margin=1in
+      indent: true
+      include-in-header:
+        - jcr-header.tex
+      template-partials:
+        - partials/doc-class.tex
+        - partials/title.tex
+        - partials/before-body.tex
+        - partials/before-bib.tex
+      fig-pos: "H"
+      colorlinks: true
+      urlcolor: "black"
+      linkcolor: "black"
+      citecolor: "black"
+    docx:
+      reference-doc: jcr-reference.docx
+      # Images written without an extension use the PNG version
+      default-image-extension: png
